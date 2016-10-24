@@ -43,7 +43,7 @@ if ( isset($_POST['btn-signup']) ) {
 
     if( !$checkIfOk ) {
 
-        $sqlQuery = "INSERT INTO users(userName,userEmail,userPassword) VALUES('$name','$email','$pass')";
+        $sqlQuery = "INSERT INTO users(userName,userEmail,userPassword, role) VALUES('$name','$email','$pass', 'user')";
         $result = $connection -> query($sqlQuery);
 
         if ($result) {
@@ -97,17 +97,15 @@ if ( isset($_POST['btn-signup']) ) {
                     <div class="form-group">
                         <div class="input-group">
                             <span class="input-group-addon"><span class="glyphicon glyphicon-user"></span></span>
-                            <input type="text" name="name" class="form-control" placeholder="Enter Name" maxlength="50" value="<?php echo $name ?>" />
+                            <input type="text" name="name" class="form-control" placeholder="Enter Name" maxlength="50"  />
                         </div>
-                        <span class="text-danger"><?php echo $nameError; ?></span>
                     </div>
 
                     <div class="form-group">
                         <div class="input-group">
                             <span class="input-group-addon"><span class="glyphicon glyphicon-envelope"></span></span>
-                            <input type="email" name="email" class="form-control" placeholder="Enter Your Email" maxlength="40" value="<?php echo $email ?>" />
+                            <input type="email" name="email" class="form-control" placeholder="Enter Your Email" maxlength="40"  />
                         </div>
-                        <span class="text-danger"><?php echo $emailError; ?></span>
                     </div>
 
                     <div class="form-group">
@@ -115,7 +113,6 @@ if ( isset($_POST['btn-signup']) ) {
                             <span class="input-group-addon"><span class="glyphicon glyphicon-lock"></span></span>
                             <input type="password" name="pass" class="form-control" placeholder="Enter Password" maxlength="15" />
                         </div>
-                        <span class="text-danger"><?php echo $passError; ?></span>
                     </div>
 
                     <div class="form-group">
