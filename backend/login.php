@@ -3,7 +3,7 @@ session_start();
 require_once 'databaseProperties.php';
 
 if (isset($_SESSION['userSession'])!="") {
-    header("Location: home.php");
+    header("Location: index.php");
     exit;
 }
 
@@ -12,24 +12,27 @@ if (isset($_POST['btn-login'])) {
     $email = strip_tags($_POST['email']);
     $pass = strip_tags($_POST['pass']);
 
-    $connection = new mysqli($host, $user, $pass, $name );
+    $connection = new mysqli($host, $dbUser, $dbPassword, $dbName);
 
-    $sqlQuery = ("SELECT user_id, email, password FROM tbl_users WHERE email='$email'");
+    $sqlQuery = ("SELECT  userEmail, userPassword, role FROM users WHERE userEmail='$email'");
     $result = $connection->query($sqlQuery);
     $row=$result->fetch_assoc();
 
-    $count = $sqlQuery->num_rows;
-
-    if (password_verify($pass, $row['password']) && $count==1) {
-        $_SESSION['userSession'] = $row['user_id'];
-        if($row['admin']==1){
+    echo $pass;
+    echo $row['userPassword'];
+    echo password_verify($pass, $row['userPassword']);
+    if (password_verify($pass, $row['userPassword'])) {
+        $_SESSION['userSession'] = $row['userEmail'];
+        if($row['role']=='admin'){
             header("Location: admin.php");
+            $_SESSION['admin'] = 'admin';
         }else{
-            header("Location: home.php");
+            header("Location: index.php");
         }
     } else {
         $msg = "<div class='alert alert-danger'>
-     <span class='glyphicon glyphicon-info-sign'></span> &nbsp; Invalid Username or Password !
+     <span class='glyphicon glyphicon-info-sign'></span> &nbsp; Invalid User
+      or Password!
     </div>";
     }
 
@@ -46,6 +49,7 @@ if (isset($_POST['btn-login'])) {
 </head>
 <body>
 
+<div class="signin-form">
 <div class="signin-form">
 
     <div class="container">
@@ -67,7 +71,7 @@ if (isset($_POST['btn-login'])) {
             </div>
 
             <div class="form-group">
-                <input type="password" class="form-control" placeholder="Password" name="password" required />
+                <input type="password" class="form-control" placeholder="Password" name="pass" required />
             </div>
 
             <hr />

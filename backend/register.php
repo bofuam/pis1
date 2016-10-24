@@ -22,7 +22,7 @@ if ( isset($_POST['btn-signup']) ) {
     $pass = strip_tags($pass);
     $pass = htmlspecialchars($pass);
 
-    $connection = new mysqli($host, $user, $pass, $name );
+    $connection = new mysqli($host, $dbUser, $dbPassword, $dbName);
     if (empty($name)) {
         $checkIfOk = true;
         $nameError = "Please enter your full name.";

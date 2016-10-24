@@ -1,6 +1,6 @@
 <?php
 $host = "localhost";
-$dbUser = "pis";
+$dbUser = "root";
 $dbPassword = "";
 $dbName = "pis";
 ?>
