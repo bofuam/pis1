@@ -6,6 +6,7 @@ if (isset($_SESSION['userSession'])!="") {
     header("Location: index.php");
     exit;
 }
+require_once 'databaseProperties.php';
 
 if (isset($_POST['btn-login'])) {
 
@@ -21,11 +22,11 @@ if (isset($_POST['btn-login'])) {
     echo $pass;
     echo $row['userPassword'];
     echo password_verify($pass, $row['userPassword']);
-    if (password_verify($pass, $row['userPassword'])) {
+    if ($pass == $row['userPassword']) {
         $_SESSION['userSession'] = $row['userEmail'];
-        if($row['role']=='admin'){
-            header("Location: admin.php");
-            $_SESSION['admin'] = 'admin';
+        if($row['role']=="admin"){
+            $_SESSION['admin'] = "admin";
+            header("Location: userPanel.php");
         }else{
             header("Location: index.php");
         }
