@@ -3,22 +3,21 @@ session_start();
 require_once 'databaseProperties.php';
 $sqlQuery = '';
 $url = '';
-
-if(isset($_POST['delete'])){
-    $sqlQuery = "delete from text where userEmail='". $_POST['email']. "'" ;
+if (isset($_POST['addText'])){
+    $userEmail = strip_tags($_SESSION['userSession']);
+    $userEmail = htmlspecialchars($userEmail);
+    $text = strip_tags($_POST['userText']);
+    $text = htmlspecialchars($text);
+    $sqlQuery = "insert into text(userEmail, userText) values('$userEmail','$text')";
     $url = "index.php";
-
-}else {
-    $sqlQuery = "select * from text";
-}
-$connection = new mysqli($host, $dbUser, $dbPassword, $dbName);
+    $connection = new mysqli($host, $dbUser, $dbPassword, $dbName);
     $result = $connection->query($sqlQuery);
+}
 if($url !=''){
     header("Location: ". $url);
     exit();
 }
 ?>
-
 
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
@@ -35,22 +34,12 @@ if($url !=''){
         <a href="logout.php">Logout</a>
     </div>
 </div>
-    <a href="addText.php">Add new text!</a>
-<?php
-    while($text = $result->fetch_assoc()){
-        echo "<div class='single-post'>";
-        echo "user email: " . $text['userEmail'] . " | ";
-        echo $text['userText'];
-        if(isset($_SESSION['admin'])){
-            echo "<form method='post'>\n";
-            echo "<input type ='hidden' name='email' value='" .$text['userEmail'] . "'/>";
-            echo "<input type='submit' name='delete' value='delete text'/>\n";
-            echo "</form>";
-        }
-        echo "<div style='clear :both;'></div>";
-        echo "</div>";
-        echo "<br/><br/>";
-    }
-?>
+<div class="single-post">
+    <form method="post">
+        <input type="text" name="userText"/>
+        <button type="submit" name="addText" id="addText">Add text!</button>
+    </form>
+</div>
+
 </body>
 </html>
